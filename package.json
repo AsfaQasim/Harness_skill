@@ -1,0 +1,12 @@
+{
+  "name": "asfa-harness",
+  "version": "1.0.0",
+  "description": "Auto-installer for OpenCode CLI Local Harness Skill",
+  "main": "index.js",
+  "bin": {
+    "asfaharness": "./bin/cli.js"
+  },
+  "keywords": ["opencode", "harness", "agent-skill", "mcp", "sandboxing"],
+  "author": "Asifa Qasim",
+  "license": "MIT"
+}

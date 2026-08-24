@@ -1,0 +1,5 @@
+{
+  "name": "harness",
+ "description": "Execute commands under Local Harness Engine supervision",
+  "template": "System Mode: Harness Engine Active.\nAlways run commands via `python skills/local_harness.py \"<command>\"`.\n\nTask: $ARGUMENTS"
+}

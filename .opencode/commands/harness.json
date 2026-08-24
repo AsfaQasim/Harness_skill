@@ -1,5 +1,0 @@
-{
-  "name": "harness",
-  "description": "Execute commands and code under Local Harness Engine supervision (security checks, timeouts, and output isolation)",
-  "template": "System Mode: Harness Engine Active.\nAlways execute python code or terminal commands by passing them through `python harness_engine/skills/local_harness.py \"<command>\"`.\n\nTask: $ARGUMENTS\n\nGuidelines:\n1. Inspect output status from the harness JSON.\n2. If status is 'blocked', notify the user of security violation.\n3. If status is 'timeout', optimize the logic to run faster.\n4. Return sanitized execution summary to user."
-}
