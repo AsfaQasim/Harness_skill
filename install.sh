@@ -4,10 +4,10 @@ set -e
 echo "🚀 Installing Local Harness Skill for OpenCode..."
 
 # 1. Directories setup
-mkdir -p harness_engine/skills .opencode/commands
+mkdir -p skills .opencode/prompts
 
 # 2. Local Harness Engine File Create
-cat << 'EOF' > harness_engine/skills/local_harness.py
+cat << 'EOF' > skills/local_harness.py
 import sys, subprocess, json
 
 BLOCKED_COMMANDS = ["rm -rf", "del /f /s /q", "format", "shutdown", "mkfs"]
@@ -30,11 +30,11 @@ if __name__ == "__main__":
 EOF
 
 # 3. OpenCode Command Template Setup
-cat << 'EOF' > .opencode/commands/harness.json
+cat << 'EOF' > .opencode/prompts/harness.json
 {
   "name": "harness",
   "description": "Execute commands under Local Harness Engine supervision",
-  "template": "System Mode: Harness Engine Active.\nAlways run commands via `python harness_engine/skills/local_harness.py \"<command>\"`.\n\nTask: $ARGUMENTS"
+  "template": "System Mode: Harness Engine Active.\nAlways run commands via `python skills/local_harness.py \"<command>\"`.\n\nTask: $ARGUMENTS"
 }
 EOF
 

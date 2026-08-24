@@ -6,10 +6,10 @@ const path = require('path');
 console.log("Installing Local Harness Skill for OpenCode...");
 
 // Folders create karein target project me
-const opencodeDir = path.join(process.cwd(), '.opencode', 'commands');
+const opencodePromptsDir = path.join(process.cwd(), '.opencode', 'prompts');
 const skillsDir = path.join(process.cwd(), 'skills');
 
-fs.mkdirSync(opencodeDir, { recursive: true });
+fs.mkdirSync(opencodePromptsDir, { recursive: true });
 fs.mkdirSync(skillsDir, { recursive: true });
 
 // 1. Write Python Local Harness Script
@@ -34,20 +34,15 @@ if __name__ == "__main__":
     print(run_in_harness(cmd))
 `;
 
-// 2. Write OpenCode Command Markdown Configuration
-const markdownCommandConfig = `---
-description: Execute commands under Local Harness Engine supervision
----
-
-System Mode: Harness Engine Active.
-Always execute terminal commands or code snippets through the local harness wrapper:
-\`python skills/local_harness.py "$ARGUMENTS"\`
-
-Task: $ARGUMENTS
-`;
+// 2. Write OpenCode Command Configuration
+const commandConfig = JSON.stringify({
+  name: "harness",
+  description: "Execute commands under Local Harness Engine supervision",
+  template: "System Mode: Harness Engine Active.\nAlways run commands via `python skills/local_harness.py \"<command>\"`.\n\nTask: $ARGUMENTS"
+}, null, 2);
 
 fs.writeFileSync(path.join(skillsDir, 'local_harness.py'), pythonHarnessCode);
-fs.writeFileSync(path.join(opencodeDir, 'harness.md'), markdownCommandConfig);
+fs.writeFileSync(path.join(opencodePromptsDir, 'harness.json'), commandConfig);
 
 console.log("✅ AsfaHarness installed successfully into your workspace!");
 console.log("💡 You can now use '/harness <command>' inside OpenCode CLI.");

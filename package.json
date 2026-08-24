@@ -2,7 +2,6 @@
   "name": "asfa-harness",
   "version": "1.0.0",
   "description": "Auto-installer for OpenCode CLI Local Harness Skill",
-  "main": "index.js",
   "bin": {
     "asfaharness": "./bin/cli.js"
   },
