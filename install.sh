@@ -1,13 +1,24 @@
 #!/usr/bin/env bash
 set -e
 
-echo "🚀 Installing Local Harness Skill for OpenCode..."
+echo "Injecting Local Harness into OpenCode..."
 
-# 1. Directories setup
-mkdir -p skills .opencode/prompts
+mkdir -p .opencode/commands harness_engine/skills
 
-# 2. Local Harness Engine File Create
-cat << 'EOF' > skills/local_harness.py
+# Inject harness.md for OpenCode CLI slash commands
+cat << 'EOF' > .opencode/commands/harness.md
+---
+description: Run commands through Harness Sandbox
+---
+
+Always execute terminal commands using:
+`python harness_engine/skills/local_harness.py "$ARGUMENTS"`
+
+Task: $ARGUMENTS
+EOF
+
+# Inject Python Harness script
+cat << 'EOF' > harness_engine/skills/local_harness.py
 import sys, subprocess, json
 
 BLOCKED_COMMANDS = ["rm -rf", "del /f /s /q", "format", "shutdown", "mkfs"]
@@ -29,14 +40,4 @@ if __name__ == "__main__":
     print(run_in_harness(cmd))
 EOF
 
-# 3. OpenCode Command Template Setup
-cat << 'EOF' > .opencode/prompts/harness.json
-{
-  "name": "harness",
-  "description": "Execute commands under Local Harness Engine supervision",
-  "template": "System Mode: Harness Engine Active.\nAlways run commands via `python skills/local_harness.py \"<command>\"`.\n\nTask: $ARGUMENTS"
-}
-EOF
-
-echo "Local Harness Installed Successfully!"
-echo "Usage in OpenCode: /harness <your-command>"
+echo "Installed! /harness is now active in OpenCode CLI."

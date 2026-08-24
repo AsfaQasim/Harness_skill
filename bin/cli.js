@@ -3,16 +3,17 @@
 const fs = require('fs');
 const path = require('path');
 
-console.log("Installing Local Harness Skill for OpenCode...");
+console.log("🚀 Injecting Local Harness Engine & OpenCode Commands...");
 
-// Folders create karein target project me
-const opencodePromptsDir = path.join(process.cwd(), '.opencode', 'prompts');
-const skillsDir = path.join(process.cwd(), 'skills');
+// Paths setup
+const opencodeDir = path.join(process.cwd(), '.opencode', 'commands');
+const skillsDir = path.join(process.cwd(), 'harness_engine', 'skills');
 
-fs.mkdirSync(opencodePromptsDir, { recursive: true });
+// Create directories recursively
+fs.mkdirSync(opencodeDir, { recursive: true });
 fs.mkdirSync(skillsDir, { recursive: true });
 
-// 1. Write Python Local Harness Script
+// 1. Python Local Harness Engine Logic
 const pythonHarnessCode = `import sys, subprocess, json
 
 BLOCKED_COMMANDS = ["rm -rf", "del /f /s /q", "format", "shutdown", "mkfs"]
@@ -34,15 +35,20 @@ if __name__ == "__main__":
     print(run_in_harness(cmd))
 `;
 
-// 2. Write OpenCode Command Configuration
-const commandConfig = JSON.stringify({
-  name: "harness",
-  description: "Execute commands under Local Harness Engine supervision",
-  template: "System Mode: Harness Engine Active.\nAlways run commands via `python skills/local_harness.py \"<command>\"`.\n\nTask: $ARGUMENTS"
-}, null, 2);
+// 2. OpenCode Slash Command Markdown Injection
+const opencodeCommandMarkdown = `---
+description: Run commands through Harness Sandbox
+---
 
+Always execute terminal commands using:
+\`python harness_engine/skills/local_harness.py "$ARGUMENTS"\`
+
+Task: $ARGUMENTS
+`;
+
+// Write files directly into target project
 fs.writeFileSync(path.join(skillsDir, 'local_harness.py'), pythonHarnessCode);
-fs.writeFileSync(path.join(opencodePromptsDir, 'harness.json'), commandConfig);
+fs.writeFileSync(path.join(opencodeDir, 'harness.md'), opencodeCommandMarkdown);
 
-console.log("✅ AsfaHarness installed successfully into your workspace!");
-console.log("💡 You can now use '/harness <command>' inside OpenCode CLI.");
+console.log("Auto-injection complete!");
+console.log("You can now restart OpenCode CLI and use /harness instantly.");

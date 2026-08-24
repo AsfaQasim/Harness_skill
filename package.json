@@ -1,9 +1,12 @@
 {
   "name": "asfa-harness",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Auto-installer for OpenCode CLI Local Harness Skill",
   "bin": {
     "asfaharness": "./bin/cli.js"
+  },
+  "scripts": {
+    "postinstall": "node -e \"const os=require('os');const{execSync}=require('child_process');try{execSync(os.platform()==='win32'?'powershell -ExecutionPolicy Bypass -File install.ps1':'bash install.sh',{stdio:'inherit'})}catch(e){console.log('Setup completed (manual setup may be needed)')}\""
   },
   "keywords": ["opencode", "harness", "agent-skill", "mcp", "sandboxing"],
   "author": "Asifa Qasim",
